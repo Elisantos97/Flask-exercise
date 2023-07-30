@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+
+<table class="table table-striped table-info">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Nome</th>
+        <th scope="col">equipa</th>
+        <th scope="col">Número</th>
+        <th scope="col">Idade</th>
+        <th scope="col">Nacionalidade</th>
+      
+      </tr>
+    </thead>
+    <tbody>
+
+        
+
+        {% for i in lista %}
+      <tr>
+        <td>{{i.get('nome')}}</td>
+        <td>{{i.get('equipa')}}</td>
+        <td>{{i.get('numero')}}</td>
+        <td>{{i.get('idade')}}</td>
+        <td>{{i.get('nacionalidade')}}</td>
+      </tr>
+
+        {% endfor %}
+
+    </tbody>
+  </table>
+  
+
+  
+{% endblock %}
