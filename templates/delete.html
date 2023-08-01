@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title%}formulario updadte{% endblock %}
+
+{% block content %}
+
+<form class="needs-validation" action="/delete" method="post">
+
+
+  
+  
+  <legend>Dados do jogador</legend>
+  
+
+  <label for="name">Nome</label>
+  <input type="text" id="name" name="name" value=""><br>
+  
+  
+  <input type="reset" value="Clear form">
+  <input type="submit" value="Send form">
+  
+  
+  
+  
+  
+</form>
+
+{% endblock %}

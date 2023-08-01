@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title%}formulario updadte{% endblock %}
+
+{% block content %}
+
+<form class="needs-validation" action="/update" method="post">
+
+
+  
+  
+  <legend>Dados do jogador</legend>
+  
+
+  <label for="name">Nome</label>
+  <input type="text" id="name" name="name" value=""><br>
+  <label for="equipa">Equipa</label>
+  <input type="text" id="equipa" name="equipa" value=""><br>
+  <label for="idade">Idade</label>
+  <input type="text" id="idade" name="idade" value=""><br>
+  <label for="nac">Nacionalidade</label>
+  <input type="text" id="nac" name="nac" value=""><br>
+  <label for="num">Número</label>
+  <input type="text" id="num" name="num" value=""><br>
+  
+  
+  <input type="reset" value="Clear form">
+  <input type="submit" value="Send form">
+  
+  
+  
+  
+  
+</form>
+
+{% endblock %}

@@ -64,15 +64,25 @@ def tab():
 
 #     return valor
 
-@app.route("/formulario")
+@app.route("/create")
 def formulario():
 
-    return render_template("formulario.html")
+    return render_template("create.html")
 
 
+@app.route("/edit")
+def update_dados():
 
-@app.route("/resposta", methods=["POST", 'GET'])
-def resposta():
+    return render_template("update.html")
+
+@app.route("/deletar")
+def delete_dados():
+
+    return render_template("delete.html")
+
+
+@app.route("/form", methods=["POST", 'GET'])
+def create():
 
     if request.method=='POST':
 
@@ -95,13 +105,64 @@ def resposta():
         lista={"nome": nome, "equipa": equipa, "idade": idade, "nacionalidade": nacionalidade, "numero": numero}
 
       
-
-        return redirect(url_for("tab"))
+    
+    return redirect(url_for("tab"))
 
     #return render_template("dados.html", val=item)
 
+
+@app.route("/update", methods=["POST", 'GET'])
+def update_data():
+
+    if request.method=='POST':
+
+        nome = request.form["name"]
+        equipa = request.form["equipa"]
+        idade = request.form["idade"]
+        nacionalidade = request.form["nac"]
+        numero = request.form["num"]
+
+        con = sqlite3.connect('jogadores.db')
+        cur = con.cursor()
+        cur.execute(f"update jogador set equipa ='{equipa}', idade = '{idade}', \
+                    nacionalidade = '{nacionalidade}', numero = '{numero}' where nome = '{nome}'")
+       
+        con.commit()
+
+        
+        con.close()
+
+        msg = "Record successfully added to database"
+        #flash("You have been logged out", "info")
+
     
+    return redirect(url_for("tab"))
+
+
+@app.route("/delete", methods=["POST", 'GET'])
+def delete_data():
+
+    if request.method=='POST':
+
+        nome = request.form["name"]
+
+        con = sqlite3.connect('jogadores.db')
+        cur = con.cursor()
+        cur.execute(f"DELETE from jogador where nome = '{nome}'")
+       
+        con.commit()
+
+        
+        con.close()
+
+        msg = "Record successfully added to database"
+        
+
     
+    return redirect(url_for("tab"))
+
+    
+
     
 
 
