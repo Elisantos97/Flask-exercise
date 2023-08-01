@@ -2,21 +2,11 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from datetime import timedelta
 from functools import update_wrapper
 from flask_cors import CORS
-
-
-
 import sqlite3
-con = sqlite3.connect("jogadores.db")
-cur = con.cursor()
-
-# values=[('Zito', 'Academica', 26, 'cabo-verdiana', 19)]
 
 
-#cur.executemany("INSERT INTO jogador VALUES (?,?,?,?,?)", values)
+# import sqlite3
 
-lista=[]
-for i in cur.execute("SELECT * FROM jogador"):
-    lista.append({"nome":i[0], "equipa":i[1], "idade":i[2], "nacionalidade":i[3], "numero":i[4]})
 
 
 # values=[(nome, equipa, idade, nac, num)]
@@ -29,10 +19,21 @@ app.secret_key = "hello"
 
 @app.route("/")
 def home():
-    return render_template("index.html", dados={"nome":"Elisandro Santos", "idade":26, "naturalidade":"Cabo Verde"})
+    return render_template("index.html")
 
 @app.route("/tabela")
 def tab():
+    con = sqlite3.connect("jogadores.db")
+    cur = con.cursor()
+
+# # values=[('Zito', 'Academica', 26, 'cabo-verdiana', 19)]
+
+
+# cur.executemany("INSERT INTO jogador VALUES (?,?,?,?,?)", values)
+
+    lista=[]
+    for i in cur.execute("SELECT * FROM jogador"):
+        lista.append({"nome":i[0], "equipa":i[1], "idade":i[2], "nacionalidade":i[3], "numero":i[4]})
 
 
 
@@ -53,13 +54,15 @@ def tab():
     
 #     return jsonify(lista[ind])
 
-@app.route("/lista", methods=["GET"])
-def lista_jog():
+# @app.route("/lista", methods=["GET"])
+# def lista_jog():
 
-    
+#     return jsonify(lista)
 
-    
-    return jsonify(lista)
+# @app.route("/<valor>")
+# def dados(valor):
+
+#     return valor
 
 @app.route("/formulario")
 def formulario():
@@ -68,39 +71,39 @@ def formulario():
 
 
 
-@app.route("/resposta", methods=["POST"])
-def resp():
+@app.route("/resposta", methods=["POST", 'GET'])
+def resposta():
 
     if request.method=='POST':
 
-        formul = request.form
-        nome = formul["name"]
-        equipa = formul["equipa"]
-        idade = formul["idade"]
-        nacionalidade = formul["nac"]
-        numero = formul["num"]
+      
+        nome = request.form["name"]
+        equipa = request.form["equipa"]
+        idade = request.form["idade"]
+        nacionalidade = request.form["nac"]
+        numero = request.form["num"]
         
-        item = {
+        with sqlite3.connect('jogadores.db') as con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO jogador (nome, equipa, idade, nacionalidade, numero) VALUES (?,?,?,?,?)",(nome, equipa, idade, nacionalidade, numero))
 
-            'nome' : nome
-            ,'equipa' : equipa
-            ,'numero' : numero
-            ,'idade' : idade
-            ,'nacionalidade' : nacionalidade
+            con.commit()
+            msg = "Record successfully added to database"
+        
+        con.close()
 
-        }
+        lista={"nome": nome, "equipa": equipa, "idade": idade, "nacionalidade": nacionalidade, "numero": numero}
 
-    return render_template("dados.html", val=item)
+      
+
+        return redirect(url_for("tab"))
+
+    #return render_template("dados.html", val=item)
 
     
     
     
-@app.route("/dados", methods=["POST", "GET"])
-def dados():
 
-
-
-    return render_template("dados.html")
 
 
 @app.route("/login", methods=["POST", "GET"])
