@@ -5,7 +5,17 @@ from flask_cors import CORS
 import sqlite3
 
 
-# import sqlite3
+con = sqlite3.connect("jogadores.db")
+cur = con.cursor()
+
+# # values=[('Zito', 'Academica', 26, 'cabo-verdiana', 19)]
+
+
+# cur.executemany("INSERT INTO jogador VALUES (?,?,?,?,?)", values)
+
+lista=[]
+for i in cur.execute("SELECT * FROM jogador"):
+    lista.append({"nome":i[0], "equipa":i[1], "idade":i[2], "nacionalidade":i[3], "numero":i[4]})
 
 
 
@@ -44,15 +54,15 @@ def tab():
     
 #     return render_template("dados.html")
 
-# @app.route("/<name>", methods=["GET"])
-# def lista_jog(name):
+@app.route("/<name>", methods=["GET"])
+def lista_jog(name):
 
-#     ind=0
-#     for i in range(len(lista)):
-#         if (lista[i].get("nome")).lower()==name:
-#             ind=i
+    ind=0
+    for i in range(len(lista)):
+        if (lista[i].get("nome")).lower()==name:
+            ind=i
     
-#     return jsonify(lista[ind])
+    return jsonify(lista[ind])
 
 # @app.route("/lista", methods=["GET"])
 # def lista_jog():
