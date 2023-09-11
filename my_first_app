@@ -62,7 +62,7 @@ def lista_jog(name):
         if (lista[i].get("nome")).lower()==name:
             ind=i
     
-    return jsonify(lista[ind])
+    return jsonify(lista)
 
 # @app.route("/lista", methods=["GET"])
 # def lista_jog():
